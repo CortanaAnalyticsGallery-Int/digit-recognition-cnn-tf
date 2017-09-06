@@ -3,7 +3,7 @@ import numpy as np
 import sys
 import pandas as pd
 from tensorflow.contrib import learn
-from azureml.sdk import data_collector
+from azureml.logging import get_azureml_logger
 from azure.ml.api.schema.dataTypes import DataTypes
 from azure.ml.api.schema.sampleDefinition import SampleDefinition
 import azure.ml.api.realtime.services as amlo16n
@@ -76,7 +76,7 @@ def main():
     print("Net Accuracy:", _netacc)
     print(scores[0:5,:], " predicted value = ", np.argmax(scores[0:5,:], axis=1), 
     " actual value", np.argmax(mnist.test.labels[0:5,:], axis=1))
-    run_logger = data_collector.current_run() 
+    run_logger = get_azureml_logger() 
     run_logger.log("Accuracy",_netacc)
     
     print("Calling prepare schema")
