@@ -1,7 +1,7 @@
 #Read Me
 
 
-This project demonstrates on how to use Vienna for recognizing hand written digits using CNN based neural network through Tensor Flow. **In this project, we intentionally didn't used readily available layers "*tf.layers.conv2d()*" but rather created layers using raw neural network functions available in tensorflow.**
+This project demonstrates on how to use AML for recognizing hand written digits using CNN based neural network through Tensor Flow. **In this project, we intentionally didn't used readily available layers "*tf.layers.conv2d()*" but rather created layers using raw neural network functions available in tensorflow.**
 
 
 ##Training
