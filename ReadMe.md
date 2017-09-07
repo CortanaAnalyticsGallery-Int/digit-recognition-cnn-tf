@@ -46,7 +46,7 @@ Setup environment and publish web service
 ```
 	#setup environment
 	az login
-	az ml hostacct create -l eastus2euap -g amlviennagrp --sku-name S1 --sku-tier Standard -n myhstacct # this command was skipped along with other MMS commands
+	az ml hostacct create -l eastus2euap -g amlgrp --sku-name S1 --sku-tier Standard -n myhstacct # this command was skipped along with other MMS commands
 	az ml env setup
 
 	source ~/.amlenvrc
