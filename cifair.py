@@ -192,6 +192,7 @@ def sessionrun(num_epochs):
         run_logger = get_azureml_logger()   
         run_logger.log("Accuracy ", str(_netacc))
         run_logger.log("Number of Epochs", str(num_epochs))
+        
 
         # export model to outputs folder
         print("export model to outputs folder")
