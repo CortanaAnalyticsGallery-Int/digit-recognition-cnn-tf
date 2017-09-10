@@ -1,16 +1,24 @@
-#Read Me
+
+# Read Me
 
 
 This project demonstrates on how to use AML for recognizing hand written digits using CNN based neural network through Tensor Flow. **In this project, we intentionally didn't used readily available layers "*tf.layers.conv2d()*" but rather created layers using raw neural network functions available in tensorflow.**
 
+## Prerequisites
+Open command prompt from Azure Machine Learning File Menu and execute the following commands:
 
-##Training
+- pip install tensorflow
+- pip install Pillow
+- pip uninstall azure-cli-ml
+- pip install azure-cli-ml
+
+## Training
 
 
 Run cifair.py in a local Docker container
 
 ```
-    $ az ml execute start -c docker cifair.py
+    $ az ml experiment submit -c local cifair.py
 ```
 
 Download all files in output directory to your project.
@@ -18,13 +26,13 @@ Download all files in output directory to your project.
 - outputs/mnist - this folder has all model files
 - outputs/tflogs - this folder has event logs for tensor board
 
-##Scoring
+## Scoring
 
 
 Run scoring.py in a local Docker container
 
 ```
-    $ az ml execute start -c docker scoring.py
+    $ az ml experiment submit -c local scoring.py
 ```
 
 Ensure accuracy from this run is very close to the accuracy from training.
@@ -32,31 +40,34 @@ Ensure accuracy from this run is very close to the accuracy from training.
 Now run mnistimgscore.py in a local docker container
 
 ```
-    $ az ml execute start -c docker mnistimgscore.py
+    $ az ml experiment submit -c local mnistimgscore.py
 ```
 
 Make sure the run is successful and you are able to see scored probabilities and labels for sample images
 
-##Deployment
+## Deployment
 
 
 
-Setup environment and publish web service
+Setup environment and publish web service. This assumes IT admin has already created modelmanagement account for you and have setup an ACS environment for you
 
 ```
 	#setup environment
-	az login
-	az ml hostacct create -l eastus2euap -g amlgrp --sku-name S1 --sku-tier Standard -n myhstacct # this command was skipped along with other MMS commands
-	az ml env setup
+	az ml account modelmanagement set -n <model mgmt acct e.g. neerajteam2hosting> -g <azure resource group e.g. amlrsrcgrp2>
+	az ml env set -n <env name e.g. amlcluster> -g <azure resource group e.g. amlrsrcgrp2>
 
-	source ~/.amlenvrc
-	docker login wino16nenvacr.azurecr.io
 	#create web service
-	az ml service create realtime -n mnist_webservice -c aml_config/conda_dependencies.yml --model-file ./mnist -f mnistimgscore.py -s mnistschema.json -r spark-py -l
+	az ml service create realtime -n mnistws1 -f mnistimgscore.py -m .\outputs\mnist -c .\aml_config\conda_dependencies.yml -r python -l true -s .\outputs\mnistschema.json
 ```
 
+If modelmanagement account and environment has not been setup, then you can create model management account and environment using the following commands:
 
-##Consumption
+```
+	az ml env setup -n <env name e.g. amlcluster> -g <azure resource group e.g. amlrsrcgrp2> # this will setup local environment. use option -c for cluster environment
+	az ml account modelmanagement create -n <acct name e.g. neerajteam2hosting> -l <location e.g. eastus2> -g <azure resource group e.g. amlrsrcgrp2> --sku-instances <sku count e.g. 1> --sku-name <pricing tier e.g. S1> 
+```
+
+## Consumption
 
 
 
