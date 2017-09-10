@@ -195,13 +195,13 @@ def sessionrun(num_epochs):
 
         # export model to outputs folder
         print("export model to outputs folder")
-        export_path_base = 'outputs/mnist'
+        export_path_base = 'outputs/mnist/'
         print('export_path_base:', export_path_base)
         if os.path.exists(export_path_base):
            print("model path already exist, removing model path files and directory")
            shutil.rmtree(export_path_base)
-        os.mkdirs(export_path_base, exist_ok=True)
-        saver0.save(sess, 'outputs/mnist/mnistmodel')
+        os.makedirs(export_path_base, exist_ok=True)
+        saver0.save(sess, export_path_base+'mnistmodel')
         print('Done exporting!')
 
         print("export model to azure share folder")
@@ -210,7 +210,7 @@ def sessionrun(num_epochs):
         if os.path.exists(export_path_base):
            print("model path already exist, removing model path files and directory")
            shutil.rmtree(export_path_base)
-        os.mkdirs(export_path_base, exist_ok=True)
+        os.makedirs(export_path_base, exist_ok=True)
         saver0.save(sess, export_path_base+'mnistmodel')
         print('Done exporting!')
 
