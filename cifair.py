@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import shutil
 import os
+import sys
 from tensorflow.contrib import learn
 from azureml.logging import get_azureml_logger
 
@@ -175,6 +176,7 @@ def sessionrun(num_epochs):
             train_writer.add_summary(_trsumm, epoch*batch_size)
             test_writer.add_summary(_valsumm, epoch)
 
+        print("validating test data")
         test_feed_dict = {
             x: mnist.test.images,
             y: mnist.test.labels,
@@ -183,15 +185,19 @@ def sessionrun(num_epochs):
             keep_prob: 1
         }
 
-        
+        print("starting test run")
         _tstsumm,_netacc = sess.run([merged, eval_op], feed_dict= test_feed_dict)
-        print("Net accuracy: ", _netacc)
+        print("test run completed")
+        sys.stdout.flush()
         tensor_info_x = tf.saved_model.utils.build_tensor_info(x)
         tensor_info_y = tf.saved_model.utils.build_tensor_info(pred_op)
         # initialize the logger
+        print("Net accuracy: ", _netacc)
         run_logger = get_azureml_logger()   
         run_logger.log("Accuracy ", str(_netacc))
+        print("Number of epochs: ", num_epochs)
         run_logger.log("Number of Epochs", str(num_epochs))
+
         
 
         # export model to outputs folder
@@ -218,7 +224,7 @@ def sessionrun(num_epochs):
 
 def main():
     
-    sessionrun(1)
+    sessionrun(5)
 
 main()
 

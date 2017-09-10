@@ -5,14 +5,14 @@ ArgumentVector:
   - "$file"
 
 # The name of the compute target to use for this run.
-Target: "docker"
+Target: "docker-python"
 
 # Environment variables set for the run.
 EnvironmentVariables:
   "EXAMPLE_ENV_VAR": "Example Value"
 
 # Framework to execute inside. Allowed values are "Python" and "PySpark".
-Framework: "PySpark"
+Framework: "Python"
 
 # Path to the Conda dependencies file to use for this run. If a project
 # contains multiple programs with different sets of dependencies, it may be
