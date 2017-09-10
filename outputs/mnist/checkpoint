@@ -1,2 +1,3 @@
-model_checkpoint_path: "mnistmodel"
-all_model_checkpoint_paths: "mnistmodel"
+model_checkpoint_path: "C:\\Users\\neerajkh/.azureml/share//neerajteam2/neerajkhmacteam/df1/outputs/mnist/mnistmodel"
+all_model_checkpoint_paths: "outputs/mnist/mnistmodel"
+all_model_checkpoint_paths: "C:\\Users\\neerajkh/.azureml/share//neerajteam2/neerajkhmacteam/df1/outputs/mnist/mnistmodel"
