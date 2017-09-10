@@ -3,7 +3,7 @@ import numpy as np
 import shutil
 import os
 from tensorflow.contrib import learn
-from azureml.sdk import data_collector
+from azureml.logging import get_azureml_logger
 
 def splayer(inp, wt_shp, b_shp, isFinal=False, batch_norm =False, phase_train=False):
     wt_std = (2.0/wt_shp[0])**0.5
@@ -188,10 +188,10 @@ def sessionrun(num_epochs):
         print("Net accuracy: ", _netacc)
         tensor_info_x = tf.saved_model.utils.build_tensor_info(x)
         tensor_info_y = tf.saved_model.utils.build_tensor_info(pred_op)
-        run_logger = data_collector.current_run() 
-        run_logger.log("Accuracy",_netacc)
-        run_logger.log("Number of Epochs",num_epochs)
-        run_logger.log("Data Size", mnist.train.num_examples)
+        # initialize the logger
+        run_logger = get_azureml_logger()   
+        run_logger.log("Accuracy ", str(_netacc))
+        run_logger.log("Number of Epochs", str(num_epochs))
 
         # export model
         export_path_base = 'outputs/mnist'
