@@ -205,13 +205,13 @@ def sessionrun(num_epochs):
         print('Done exporting!')
 
         print("export model to azure share folder")
-        export_path_base = os.environ['AZUREML_NATIVE_SHARE_DIRECTORY'] + 'outputs/mnist'
+        export_path_base = os.environ['AZUREML_NATIVE_SHARE_DIRECTORY'] + 'outputs/mnist/'
         print('export_path_base:', export_path_base)
         if os.path.exists(export_path_base):
            print("model path already exist, removing model path files and directory")
            shutil.rmtree(export_path_base)
         os.mkdirs(export_path_base, exist_ok=True)
-        saver0.save(sess, 'outputs/mnist/mnistmodel')
+        saver0.save(sess, export_path_base+'mnistmodel')
         print('Done exporting!')
 
 
