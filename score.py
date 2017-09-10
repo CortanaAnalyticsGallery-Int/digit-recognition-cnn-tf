@@ -3,10 +3,10 @@ import numpy as np
 import sys
 import pandas as pd
 from tensorflow.contrib import learn
-from azureml.sdk import data_collector
-from azure.ml.api.schema.dataTypes import DataTypes
-from azure.ml.api.schema.sampleDefinition import SampleDefinition
-import azure.ml.api.realtime.services as amlo16n
+from azureml.logging import get_azureml_logger
+from azureml.api.schema.dataTypes import DataTypes
+from azureml.api.schema.sampleDefinition import SampleDefinition
+import azureml.api.realtime.services as amlo16n
 
 def evaluateModel(pred, y):
     correct_pred = tf.equal(tf.argmax(pred,1), tf.argmax(y,1))
@@ -14,9 +14,9 @@ def evaluateModel(pred, y):
     return accuracy
 
 def init():
-    global sess, pred_op, x, phase_train, keep_prob, graph
-    import_path = 'outputs/mnist'
-
+    global sess, pred_op, x, phase_train, keep_prob, graph, fldr
+    import_path = fldr + 'outputs/mnist/'
+    print("importing model from ", import_path)
     sess = tf.Session()
 
     saver = tf.train.import_meta_graph(str('%s/mnistmodel.meta'%import_path))
@@ -76,8 +76,8 @@ def main():
     print("Net Accuracy:", _netacc)
     print(scores[0:5,:], " predicted value = ", np.argmax(scores[0:5,:], axis=1), 
     " actual value", np.argmax(mnist.test.labels[0:5,:], axis=1))
-    run_logger = data_collector.current_run() 
-    run_logger.log("Accuracy",_netacc)
+    run_logger = get_azureml_logger() 
+    run_logger.log("Accuracy",str(_netacc))
     
     print("Calling prepare schema")
     inputs = {"nparr": SampleDefinition(DataTypes.NUMPY, mnist.test.images[0:btch_sz])}
@@ -92,4 +92,8 @@ def main():
                           main_file_name="outputs/main.py")
     print("End of prepare schema")
 
-main()
+global fldr
+fldr=""
+if __name__ == "__main__":
+    fldr = os.environ['AZUREML_NATIVE_SHARE_DIRECTORY'] 
+    main()
