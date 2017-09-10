@@ -3,9 +3,9 @@ import numpy as np
 import sys
 import pandas as pd
 from tensorflow.contrib import learn
-from azure.ml.api.schema.dataTypes import DataTypes
-from azure.ml.api.schema.sampleDefinition import SampleDefinition
-import azure.ml.api.realtime.services as amlo16n
+from azureml.api.schema.dataTypes import DataTypes
+from azureml.api.schema.sampleDefinition import SampleDefinition
+import azureml.api.realtime.services as amlo16n
 from PIL import Image
 
 def load_image(infilename):
@@ -33,8 +33,8 @@ def conv_str_to_img(npstr):
     return img
 
 def init():
-    global sess, pred_op, x, phase_train, keep_prob, graph
-    import_path = 'outputs/mnist'
+    global sess, pred_op, x, phase_train, keep_prob, graph, fldr
+    import_path = fldr+'outputs/mnist/'
 
     sess = tf.Session()
 
@@ -77,6 +77,9 @@ def main():
     predict_img("images/7.png")
     predict_img("images/2.png")
 
-
-print("calling main")
-main()
+global fldr
+fldr=""
+if __name__ == "__main__":
+    print("calling main")
+    fldr = os.environ['AZUREML_NATIVE_SHARE_DIRECTORY'] 
+    main()
