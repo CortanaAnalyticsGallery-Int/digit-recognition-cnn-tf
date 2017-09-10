@@ -193,13 +193,24 @@ def sessionrun(num_epochs):
         run_logger.log("Accuracy ", str(_netacc))
         run_logger.log("Number of Epochs", str(num_epochs))
 
-        # export model
+        # export model to outputs folder
+        print("export model to outputs folder")
         export_path_base = 'outputs/mnist'
         print('export_path_base:', export_path_base)
         if os.path.exists(export_path_base):
            print("model path already exist, removing model path files and directory")
            shutil.rmtree(export_path_base)
-        os.mkdir(export_path_base)
+        os.mkdirs(export_path_base, exist_ok=True)
+        saver0.save(sess, 'outputs/mnist/mnistmodel')
+        print('Done exporting!')
+
+        print("export model to azure share folder")
+        export_path_base = os.environ['AZUREML_NATIVE_SHARE_DIRECTORY'] + 'outputs/mnist'
+        print('export_path_base:', export_path_base)
+        if os.path.exists(export_path_base):
+           print("model path already exist, removing model path files and directory")
+           shutil.rmtree(export_path_base)
+        os.mkdirs(export_path_base, exist_ok=True)
         saver0.save(sess, 'outputs/mnist/mnistmodel')
         print('Done exporting!')
 
