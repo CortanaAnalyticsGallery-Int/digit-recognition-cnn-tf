@@ -12,7 +12,7 @@ Open command prompt from Azure Machine Learning File Menu and execute the follow
 - pip uninstall azure-cli-ml
 - pip install azure-cli-ml
 
-The **"mnistimgscore.py" and "score.py"** depends on the model and hence first run the training script (cifair.py) in your environment before executing scoring scripts. 
+The **"mnistimgscore.py" and "score.py"** depends on the model and hence, user **must first run** the training script (cifair.py) in their environment before executing scoring scripts. 
 
 ## Training
 
