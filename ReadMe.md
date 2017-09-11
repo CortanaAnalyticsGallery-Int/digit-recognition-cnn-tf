@@ -12,6 +12,8 @@ Open command prompt from Azure Machine Learning File Menu and execute the follow
 - pip uninstall azure-cli-ml
 - pip install azure-cli-ml
 
+The **"mnistimgscore.py" and "score.py"** depends on the model and hence first run the training script (cifair.py) in your environment before executing scoring scripts. 
+
 ## Training
 
 
@@ -21,7 +23,7 @@ Run cifair.py in a local Docker container
 $ az ml experiment submit -c local cifair.py
 ```
 
-Download all files in output directory to your project.
+**Download all files** in output directory to the directory outside your project and also copy conda_dependencies.yml file from aml_config directory to the same directory where the following files have been downloaded
 
 - outputs/mnist - this folder has all model files
 - outputs/tflogs - this folder has event logs for tensor board
@@ -48,8 +50,9 @@ Make sure the run is successful and you are able to see scored probabilities and
 ## Deployment
 
 
+Before starting deployment, ensure that you have downloaded  folder **outputs/mnist** from training run and downloaded **mnistschema.json** from the outputs folder of the scoring.py run into a folder outside Azure Machine Learning Workbench project folder. 
 
-Setup environment and publish web service. This assumes IT admin has already created modelmanagement account for you and have setup an ACS environment for you
+Next step is to setup environment and publish web service. This assumes IT admin has already created modelmanagement account for you and have setup an ACS environment for you
 
 ```
 #setup environment
@@ -57,7 +60,7 @@ $ az ml account modelmanagement set -n <model mgmt acct e.g. neerajteam2hosting>
 $ az ml env set -n <env name e.g. amlcluster> -g <azure resource group e.g. amlrsrcgrp2>
 
 #create web service
-$ az ml service create realtime -n mnistws1 -f mnistimgscore.py -m .\outputs\mnist -c .\aml_config\conda_dependencies.yml -r python -l true -s .\outputs\mnistschema.json
+$ az ml service create realtime -n mnistws1 -f mnistimgscore.py -m .\outputs\mnist -c .\conda_dependencies.yml -r python -l true -s .\outputs\mnistschema.json
 ```
 
 If modelmanagement account and environment has not been setup, then you can create model management account and environment using the following commands:
@@ -85,15 +88,6 @@ You can also consume Web service on sample images by executing client.py program
 ```
 $ python client.py
 	
-	images/5.png :
-	   	scored labels  scored probabilities
-	0              5                   1.0
-	images/6.png :
-   		scored labels  scored probabilities
-	0              6                   1.0
-	images/7.png :
-   		scored labels  scored probabilities
-	0              7                   1.0
 	images/2.png :
    		scored labels  scored probabilities
 	0              2                   1.0

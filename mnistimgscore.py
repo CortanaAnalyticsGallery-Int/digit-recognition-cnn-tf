@@ -35,6 +35,7 @@ def conv_str_to_img(npstr):
 def init():
     global sess, pred_op, x, phase_train, keep_prob, graph, fldr
     import_path = fldr+'outputs/mnist/'
+    #import_path = './outputs/mnist/'
 
     sess = tf.Session()
 
@@ -72,9 +73,7 @@ def main():
     global retscores
     print("main")
     init()
-    predict_img("images/5.png")
-    predict_img("images/6.png")
-    predict_img("images/7.png")
+    
     predict_img("images/2.png")
 
 global fldr

@@ -24,7 +24,3 @@ packages:
     artifact: "mmlspark_2.11"
     version: "0.7"
 
-  #	Required for SQL Server data sources.
-  - group: "com.microsoft.sqlserver"
-    artifact: "mssql-jdbc"
-    version: "6.2.1.jre8"

@@ -54,9 +54,7 @@ def predict_img(fname):
 def main():
     global retscores
     print("main")
-    predict_img("images/5.png")
-    predict_img("images/6.png")
-    predict_img("images/7.png")
+    
     predict_img("images/2.png")
 
 
